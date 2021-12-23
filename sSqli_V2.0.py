@@ -60,7 +60,7 @@ else:
 	database    = config.database
 	tablename   = config.tablename
 	dataex      = config.dataex 
-report_path = url.split("/")[2]
+
 if method == None or url == None or getdata == None or weakkey == None:
     print("Insert Args method and url and data and weakkey")
     opt.print_help()
@@ -104,6 +104,7 @@ except:pass
 if args.configfile != None:
 	data = config.data
 	headers=config.headers
+report_path = url.split("/")[2]
 #****************************************************
 def connect(url):
 	try:
@@ -209,7 +210,6 @@ if testpayload != 0:
 else:
 	testpayload = inject()
 testpayload['columns'] = int(testpayload['columns'])
-	#save_testpayload(report_path,testpayload)
 if testpayload != 0:
 	print(f"{CYAN}[*] Test Payload Is [{testpayload['payload']}] ")
 	cheak = 0
@@ -218,12 +218,14 @@ if testpayload != 0:
 		exdata = html_parse(exresult['res'])
 		if exdata != 0:
 			cheak = 1
-			print(f"{CYAN}[*] Extract Payload Is [{exresult['exp']}]")
-			print(f"{GREEN}[+] Result : ")
-			counter = 0
-			for dt in exdata:
-				counter+=1
-				print(f"{GREEN}[{counter}] {dt}")
+			break
+	if cheak == 1:		
+		print(f"{CYAN}[*] Extract Payload Is [{exresult['exp']}]")
+		print(f"{GREEN}[+] Result : ")
+		counter = 0
+		for dt in exdata:
+			counter+=1
+			print(f"{GREEN}[{counter}] {dt}")
 	if cheak == 0:	
 		print(f"{RED}[-] No Result From Site (-__-)")
 else:
